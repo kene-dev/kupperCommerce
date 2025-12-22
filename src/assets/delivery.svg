@@ -1,0 +1,14 @@
+<svg width="49" height="40" viewBox="0 0 49 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_118_1651" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="49" height="40">
+<path d="M0.908203 39.5V0.5H48.4295V39.5H0.908203Z" fill="white" stroke="white"/>
+</mask>
+<g mask="url(#mask0_118_1651)">
+<path d="M14.56 31.6667C16.7932 31.6667 18.6035 30.1743 18.6035 28.3333C18.6035 26.4924 16.7932 25 14.56 25C12.3269 25 10.5166 26.4924 10.5166 28.3333C10.5166 30.1743 12.3269 31.6667 14.56 31.6667Z" stroke="#C83232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M34.7778 31.6667C37.011 31.6667 38.8213 30.1743 38.8213 28.3333C38.8213 26.4924 37.011 25 34.7778 25C32.5447 25 30.7344 26.4924 30.7344 28.3333C30.7344 30.1743 32.5447 31.6667 34.7778 31.6667Z" stroke="#C83232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.5163 28.3335H8.899C7.55908 28.3335 6.47293 27.4381 6.47293 26.3335V21.6668M4.45117 8.3335H24.264C25.6039 8.3335 26.6901 9.2289 26.6901 10.3335V28.3335M18.6033 28.3335H30.7336M38.8204 28.3335H40.4378C41.7776 28.3335 42.8639 27.4381 42.8639 26.3335V18.3335M42.8639 18.3335H26.6901M42.8639 18.3335L37.5055 10.9712C37.0669 10.3688 36.2773 10.0002 35.4251 10.0002H26.6901" stroke="#C83232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.113 28H8.49568C7.15576 28 6.06961 27.1046 6.06961 26V21.3333M4.04785 8H23.8607C25.2006 8 26.2867 8.8954 26.2867 10V28M18.6042 28H30.3303M39.2258 28H40.0345C41.3743 28 42.4606 27.1046 42.4606 26V18M42.4606 18H26.2867M42.4606 18L37.1021 10.6377C36.6636 10.0353 35.8739 9.6667 35.0218 9.6667H26.2867" stroke="#C83232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.47363 11.8184H14.5606" stroke="#C83232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.61426 15.4546H10.7011" stroke="#C83232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.47363 19.0908H14.5606" stroke="#C83232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>
