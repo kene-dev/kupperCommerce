@@ -10,19 +10,18 @@ const SearchBar = ({ isMobile = false, onSearch }) => {
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [searchHistory, setSearchHistory] = useState([])
   const [popularSearches] = useState([
-    'Perfume',
-    'Cologne',
-    'Fragrance',
-    'Designer Scents',
-    'Luxury Perfumes'
+    'Spices',
+    'Vegetables',
+    'Herbs',
+    'Fruits'
   ])
   const searchInputRef = useRef(null)
   const suggestionsRef = useRef(null)
   const navigate = useNavigate()
   const { t } = useTranslation()
-  
+
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
-  
+
   // Fetch search suggestions
   const { data: suggestionsData } = useGetProductsQuery({
     searchTerm: debouncedSearchTerm,
@@ -46,12 +45,12 @@ const SearchBar = ({ isMobile = false, onSearch }) => {
   // Save search to history
   const saveToHistory = (term) => {
     if (!term.trim()) return
-    
+
     const updatedHistory = [
       term,
       ...searchHistory.filter(item => item.toLowerCase() !== term.toLowerCase())
     ].slice(0, 5) // Keep only last 5 searches
-    
+
     setSearchHistory(updatedHistory)
     localStorage.setItem('searchHistory', JSON.stringify(updatedHistory))
   }
@@ -67,16 +66,16 @@ const SearchBar = ({ isMobile = false, onSearch }) => {
   // Handle search submission
   const handleSearch = (term = searchTerm) => {
     if (!term.trim()) return
-    
+
     saveToHistory(term)
     setShowSuggestions(false)
-    
+
     if (onSearch) {
       onSearch(term)
     } else {
       navigate(`/search?q=${encodeURIComponent(term)}`)
     }
-    
+
     if (searchInputRef.current) {
       searchInputRef.current.blur()
     }
@@ -134,13 +133,12 @@ const SearchBar = ({ isMobile = false, onSearch }) => {
           onKeyDown={handleKeyPress}
           onFocus={() => setShowSuggestions(true)}
           placeholder={isMobile ? 'Search products..' : `${t('search products')}...`}
-          className={`w-full ${
-            isMobile 
+          className={`w-full ${isMobile
               ? 'pl-4 pr-10 rounded-lg bg-primary text-white placeholder-bsecondary/40 placeholder:text-xs outline-none ring-0 h-full'
               : 'pl-4 border-y border-l rounded-l-lg border-secondary text-primary placeholder-primary/40 placeholder:text-xs focus:outline-none bg-white h-full'
-          }`}
+            }`}
         />
-        
+
         {searchTerm && (
           <button
             onClick={() => {
@@ -158,8 +156,8 @@ const SearchBar = ({ isMobile = false, onSearch }) => {
         )}
 
         {isMobile ? (
-          <Search 
-            className="absolute right-3 w-4 h-4 text-secondary cursor-pointer" 
+          <Search
+            className="absolute right-3 w-4 h-4 text-secondary cursor-pointer"
             onClick={() => handleSearch()}
           />
         ) : (

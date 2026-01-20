@@ -3,43 +3,43 @@ import { apiSlice } from "./apiSlice";
 
 
 const authAPiSlice = apiSlice.injectEndpoints({
-    endpoints:(builder) => ({
+    endpoints: (builder) => ({
         signUpUser: builder.mutation({
-            async queryFn({id, email, role, firstName, lastName}){
+            async queryFn({ id, email, role, firstName, lastName }) {
                 console.log(firstName, lastName)
                 try {
                     const { data, error } = await supabase
-                    .from('users')
-                    .insert([{
-                      id,
-                      email,
-                      role,
-                      firstName,
-                      lastName
-                    }])
-                    .select();
+                        .from('users')
+                        .insert([{
+                            id,
+                            email,
+                            role,
+                            firstName,
+                            lastName
+                        }])
+                        .select();
 
                     if (error) {
-                      return { error: { status: error.status, data: error.message } };
+                        return { error: { status: error.status, data: error.message } };
                     }
                     return { data };
 
                 } catch (error) {
                     return { error: { status: error.status || 500, data: error.message } };
                 }
-               
+
             }
         }),
 
 
-        signInUser:builder.mutation({
-            async queryFn(formData){
+        signInUser: builder.mutation({
+            async queryFn(formData) {
                 try {
                     console.log(formData)
-                    const {data,error} = await supabase.auth.signInWithPassword(formData);
-                    console.log({error})
+                    const { data, error } = await supabase.auth.signInWithPassword(formData);
+                    console.log({ error })
                     if (error) {
-                      return { error: { status: error.status, data: error.message } };
+                        return { error: { status: error.status, data: error.message } };
                     }
                     return { data };
                 } catch (error) {
@@ -48,42 +48,42 @@ const authAPiSlice = apiSlice.injectEndpoints({
             }
         }),
 
-        getUser:builder.query({
-            async queryFn(){
+        getUser: builder.query({
+            async queryFn() {
                 try {
                     const { data: { user } } = await supabase.auth.getUser()
-                    
-                    console.log({user});
-                    return { user };
+
+                    console.log({ user });
+                    return { data: user };
                 } catch (error) {
                     return { error: { status: error.status || 500, data: error.message } };
-                  }
+                }
             }
         }),
 
 
-        signOutUser:builder.mutation({
-            async queryFn(){
+        signOutUser: builder.mutation({
+            async queryFn() {
                 try {
                     const { error } = await supabase.auth.signOut();
                     if (error) {
-                      return { error: { status: error.status, data: error.message } };
+                        return { error: { status: error.status, data: error.message } };
                     }
                     return { data: { message: 'Sign out successful' } };
-                  } catch (error) {
+                } catch (error) {
                     return { error: { status: error.status || 500, data: error.message } };
-                  }
+                }
             }
         }),
 
-        forgotPassword:builder.mutation({
-            async queryFn({email}){
+        forgotPassword: builder.mutation({
+            async queryFn({ email }) {
                 try {
-                   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+                    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
                         redirectTo: 'http://localhost:5173/auth/reset-password',
                     });
                     if (error) {
-                      return { error: { status: error.status, data: error.message } };
+                        return { error: { status: error.status, data: error.message } };
                     }
                     console.log(data)
                     return { data };
@@ -93,16 +93,16 @@ const authAPiSlice = apiSlice.injectEndpoints({
             }
         }),
 
-        resetPassword:builder.mutation({
-            async queryFn({password}){
+        resetPassword: builder.mutation({
+            async queryFn({ password }) {
                 try {
-                     const { data, error } = await supabase.auth.updateUser({
+                    const { data, error } = await supabase.auth.updateUser({
                         password
-                     });
-                     if (error) {
-                       return { error: { status: error.status, data: error.message } };
-                     }
-                     return { data };
+                    });
+                    if (error) {
+                        return { error: { status: error.status, data: error.message } };
+                    }
+                    return { data };
                 } catch (error) {
                     return { error: { status: error.status || 500, data: error.message } };
                 }
@@ -112,4 +112,4 @@ const authAPiSlice = apiSlice.injectEndpoints({
 
     })
 })
-export const {useSignInUserMutation, useSignUpUserMutation, useSignOutUserMutation, useGetUserQuery, useForgotPasswordMutation, useResetPasswordMutation} = authAPiSlice;
+export const { useSignInUserMutation, useSignUpUserMutation, useSignOutUserMutation, useGetUserQuery, useForgotPasswordMutation, useResetPasswordMutation } = authAPiSlice;
