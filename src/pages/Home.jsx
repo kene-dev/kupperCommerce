@@ -85,7 +85,7 @@ const Home = () => {
 
 
                 {/* BANNER AREA */}
-                <div style={{ backgroundImage: `url(${banner})` }} className='w-full h-[541px] my-10 bg-fixed bg-cover bg-center bg-no-repeat relative overflow-hidden'>
+                <div style={{ backgroundImage: `url(${banner})` }} className='w-full h-[541px] my-10 bg-fixed bg-cover bg-center bg-no-repeat relative overflow-hidden home-banner'>
                     <div className='absolute top-1/3 px-10 lg:bg-transparent bg-black/30 p-3 lg:p-0'>
                         <h1 className='lg:text-8xl text-7xl text-white drop-shadow-lg font-semibold'>BEST DEALS</h1>
                         <Link to="/shop">

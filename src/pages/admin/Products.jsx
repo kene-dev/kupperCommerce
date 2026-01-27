@@ -256,7 +256,7 @@ const Products = () => {
                                             productPrice: product.productPrice,
                                             discountedPrice: product.discountedPrice ?? '',
                                             productCategory: product.productCategory,
-                                            productRegion: product.productRegion,
+                                            productBrand: product.productBrand,
                                             productImage: undefined
                                         })
                                         setOpenEditModal(true)
@@ -360,13 +360,13 @@ const Products = () => {
                             <div className='w-full flex flex-col gap-8'>
                                 <div className='flex flex-col gap-1 w-full'>
                                     <label>Regions</label>
-                                    <select {...registerEdit('productRegion')} className='appearance-none w-full h-[50px] rounded-md border-[1px] border-black/40 px-5'>
+                                    <select {...registerEdit('productBrand')} className='appearance-none w-full h-[50px] rounded-md border-[1px] border-black/40 px-5'>
                                         <option disabled selected >Select product category</option>
                                         {regions?.map(region => (
                                             <option key={region.id} value={region.id}>{region.regionName}</option>
                                         ))}
                                     </select>
-                                    {editErrors.productRegion && (<p className="mt-1 text-red-500 text-sm">{editErrors.productRegion.message}</p>)}
+                                    {editErrors.productBrand && (<p className="mt-1 text-red-500 text-sm">{editErrors.productBrand.message}</p>)}
                                 </div>
 
                                 <div className='flex flex-col gap-1 w-full'>
