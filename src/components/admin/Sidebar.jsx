@@ -3,9 +3,19 @@ import logo from '../../assets/koopLogo.png';
 import { adminNavLinks } from '@/lib/navLinks';
 import { Link, useLocation } from 'react-router';
 import { X } from 'lucide-react';
+import { Button } from '../ui/button';
+import { useSignOutUserMutation } from '@/app/features/api/authApiSlice';
+import { clearAuthState } from '@/app/features/authSlice';
+import { clearCart } from '@/app/features/cartSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { BiLogOut } from "react-icons/bi";
 
 const Sidebar = ({ isOpen, onClose }) => {
     const { pathname } = useLocation()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const [signOut] = useSignOutUserMutation()
 
     const handleLinkClick = () => {
         // Close sidebar on mobile when a link is clicked
@@ -13,6 +23,29 @@ const Sidebar = ({ isOpen, onClose }) => {
             onClose();
         }
     };
+
+    const handleLogout = async () => {
+        try {
+            // Sign out from Supabase
+            await signOut().unwrap()
+
+            // Clear auth state
+            dispatch(clearAuthState())
+
+            // Clear cart
+            dispatch(clearCart())
+
+            // Navigate to home page
+            navigate('/')
+        } catch (error) {
+            console.error('Logout error:', error)
+            // Even if there's an error, clear local state and navigate
+            dispatch(clearAuthState())
+            dispatch(clearCart())
+            navigate('/')
+        }
+    };
+
 
     return (
         <>
@@ -57,6 +90,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                             {link.name}
                         </Link>
                     ))}
+
+                    <Button onClick={handleLogout} className={`text-white hover:bg-secondary hover:text-primary w-full h-[55px] lg:h-[61px] my-3 lg:my-4 rounded-lg text-center flex items-center justify-start gap-4 lg:gap-5 shadow-lg px-6 lg:px-10 text-sm lg:text-base transition-colors duration-200`} >
+                        <BiLogOut size={20} />
+                        <p>Logout</p>
+                    </Button>
                 </div>
             </div>
         </>

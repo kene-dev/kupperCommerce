@@ -69,7 +69,7 @@ const AdminLayout = () => {
       {/* Sidebar - now always rendered, visibility controlled by props */}
       <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
 
-      <div className='h-full grow overflow-y-auto pt-14 lg:pt-0'>
+      <div className='h-screen grow overflow-y-auto pt-14 lg:pt-0'>
         {user && user.user_metadata?.role === 'admin' ?
           <Outlet />
           : <Navigate to="/" replace />}

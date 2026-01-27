@@ -19,6 +19,9 @@ const authSlice = createSlice({
     },
     clearAuthState: (state) => {
       state.user = null;
+      state.role = null;
+      state.firstName = null;
+      state.lastName = null;
     }
   }
 });

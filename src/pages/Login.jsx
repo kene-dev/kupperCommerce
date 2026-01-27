@@ -1,10 +1,8 @@
-import { useSignInUserMutation, useSignUpUserMutation } from '@/app/features/api/authApiSlice';
-import supabase from '@/app/supabaseClient';
+import { useGetUserQuery, useSignInUserMutation } from '@/app/features/api/authApiSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { FiEye } from "react-icons/fi";
-import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
@@ -24,30 +22,50 @@ const Login = () => {
   })
   const [hide, setHide] = useState(true);
   const navigate = useNavigate()
-  const isOnline = useSelector(state => state.persistedReducer.auth.user)
-  const userRole = useSelector(state => state.persistedReducer.auth.role)
+  const location = useLocation()
+  const { data, isLoading: isUserLoading } = useGetUserQuery()
+
+  const from = location.state?.from?.pathname || '/';
+  // const isOnline = useSelector(state => state.persistedReducer.auth.user)
+  // const userRole = useSelector(state => state.persistedReducer.auth.role)
 
 
   const onSubmit = async (formData) => {
     try {
       const response = await signInUser(formData).unwrap();
-      reset()
+      if (response) {
+        reset()
+        const userRole = response.user.user_metadata.role;
+        if (userRole === 'admin') {
+          navigate('/admin', { replace: true })
+        } else {
+          // Redirect to "from" location if it's not the home page, otherwise go to home
+          const destination = from !== '/' ? from : '/';
+          navigate(destination, { replace: true })
+        }
+      }
     } catch (error) {
-      toast.error(error.data)
+      toast.error(error.data || "Login failed")
       console.error('Error logging in user:', error)
     }
   }
 
   useEffect(() => {
-    if (isOnline) {
-      // Navigate admin users to admin panel, regular users to home
-      if (userRole === 'admin') {
-        navigate('/admin')
+    if (data && !isUserLoading) {
+      if (data.user_metadata.role === 'admin') {
+        if (location.pathname !== '/admin') navigate('/admin', { replace: true })
       } else {
-        navigate('/')
+        if (location.pathname === '/auth') navigate(from, { replace: true })
       }
     }
-  }, [isOnline, userRole, navigate])
+  }, [data, isUserLoading, navigate, location.pathname, from])
+
+
+  if (isUserLoading) {
+    return <div>Loading...</div>
+  }
+
+
 
 
   return (
@@ -71,7 +89,7 @@ const Login = () => {
             {isLoading ? (<div className='loader'></div>) : 'Sign in'}
           </button>
 
-          <Link to="forgot-password" className='text-primary text-center'>Forgot Your Password?</Link>
+          <Link to="/auth/forgot-password" className='text-primary text-center'>Forgot Your Password?</Link>
         </div>
       </form>
 

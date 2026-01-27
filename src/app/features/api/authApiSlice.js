@@ -6,7 +6,6 @@ const authAPiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         signUpUser: builder.mutation({
             async queryFn({ id, email, role, firstName, lastName }) {
-                console.log(firstName, lastName)
                 try {
                     const { data, error } = await supabase
                         .from('users')
@@ -20,45 +19,47 @@ const authAPiSlice = apiSlice.injectEndpoints({
                         .select();
 
                     if (error) {
-                        return { error: { status: error.status, data: error.message } };
+                        return { error: { status: error.status || 'CUSTOM_ERROR', data: error.message } };
                     }
                     return { data };
 
                 } catch (error) {
-                    return { error: { status: error.status || 500, data: error.message } };
+                    return { error: { status: 500, data: error.message } };
                 }
-
-            }
+            },
+            invalidatesTags: ['User']
         }),
 
 
         signInUser: builder.mutation({
             async queryFn(formData) {
                 try {
-                    console.log(formData)
                     const { data, error } = await supabase.auth.signInWithPassword(formData);
-                    console.log({ error })
                     if (error) {
-                        return { error: { status: error.status, data: error.message } };
+                        return { error: { status: error.status || 'FETCH_ERROR', data: error.message } };
                     }
                     return { data };
                 } catch (error) {
-                    return { error: { status: error.status || 500, data: error.message } };
+                    return { error: { status: 500, data: error.message } };
                 }
-            }
+            },
+            invalidatesTags: ['User']
         }),
 
         getUser: builder.query({
             async queryFn() {
                 try {
-                    const { data: { user } } = await supabase.auth.getUser()
+                    const { data: { user }, error } = await supabase.auth.getUser()
 
-                    console.log({ user });
+                    if (error) {
+                        return { error: { status: error.status || 'FETCH_ERROR', data: error.message } };
+                    }
                     return { data: user };
                 } catch (error) {
-                    return { error: { status: error.status || 500, data: error.message } };
+                    return { error: { status: 500, data: error.message } };
                 }
-            }
+            },
+            providesTags: ['User']
         }),
 
 
@@ -67,13 +68,14 @@ const authAPiSlice = apiSlice.injectEndpoints({
                 try {
                     const { error } = await supabase.auth.signOut();
                     if (error) {
-                        return { error: { status: error.status, data: error.message } };
+                        return { error: { status: error.status || 'FETCH_ERROR', data: error.message } };
                     }
                     return { data: { message: 'Sign out successful' } };
                 } catch (error) {
-                    return { error: { status: error.status || 500, data: error.message } };
+                    return { error: { status: 500, data: error.message } };
                 }
-            }
+            },
+            invalidatesTags: ['User']
         }),
 
         forgotPassword: builder.mutation({

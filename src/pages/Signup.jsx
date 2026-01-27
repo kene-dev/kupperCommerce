@@ -1,33 +1,31 @@
-import { useSignUpUserMutation } from '@/app/features/api/authApiSlice';
-import supabase from '@/app/supabaseClient';
+import { useGetUserQuery, useSignUpUserMutation } from '@/app/features/api/authApiSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { FiEye } from "react-icons/fi";
-import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 const signupSchema = z.object({
-  firstName:z.string().min(1,'Please input your first name'),
-  lastName:z.string().min(1,'Please input your last name'),
+  firstName: z.string().min(1, 'Please input your first name'),
+  lastName: z.string().min(1, 'Please input your last name'),
   email: z.string().email().min(1, "please input your email"),
   password: z.string().min(6, 'please add your password')
 })
 
 const Signup = () => {
-  const [signUpUser, {isLoading}] = useSignUpUserMutation()
-  const {register, handleSubmit,reset, formState:{errors,isSubmitting}} = useForm({
-          resolver: zodResolver(signupSchema)
+  const [signUpUser, { isLoading }] = useSignUpUserMutation()
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm({
+    resolver: zodResolver(signupSchema)
   })
-  const isOnline = useSelector(state => state.persistedReducer.auth.user)
+  const { data, isLoading: isUserLoading } = useGetUserQuery() // Replaced useSelector with useGetUserQuery
   const navigate = useNavigate()
 
 
   const onSubmit = async (formData) => {
-    console.log(formData)
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const response = await signUpUser({
         email: formData.email,
         password: formData.password,
         options: {
@@ -39,19 +37,22 @@ const Signup = () => {
         }
       });
 
-    if(error) throw error
-    console.log("NEW USER: ", data)
-    reset()
+      if (response) {
+        toast.success("Account created successfully!")
+        reset()
+        navigate('/auth')
+      }
     } catch (error) {
-      console.error('Error logging in user:', error)
+      toast.error(error.data || "Signup failed")
+      console.error('Error signing up user:', error)
+    }
   }
-}
 
-useEffect(() => {
-  if(isOnline){
-    navigate('/')
-  }
-},[isOnline])
+  useEffect(() => {
+    if (data && !isUserLoading) {
+      navigate('/')
+    }
+  }, [data, isUserLoading, navigate])
 
 
   return (
@@ -61,25 +62,25 @@ useEffect(() => {
         <p className='text-xs text-gray-500 mb-5'>Please register your details</p>
         <div className='flex flex-col gap-7'>
           <input {...register('firstName')} className='border border-gray rounded-sm shadow-xs h-10 p-3 placeholder:text-xs ' type="text" name="firstName" id="" placeholder='First Name' />
-           {errors.firstName && (<p className="-mt-5 text-red-500 text-sm">{errors.firstName.message}</p>)}
+          {errors.firstName && (<p className="-mt-5 text-red-500 text-sm">{errors.firstName.message}</p>)}
 
 
           <input {...register('lastName')} className='border border-gray rounded-sm shadow-xs h-10 p-3 placeholder:text-xs' type="text" name='lastName' id='' placeholder='Last Name' />
-           {errors.lastName && (<p className="-mt-5 text-red-500 text-sm">{errors.lastName.message}</p>)}
+          {errors.lastName && (<p className="-mt-5 text-red-500 text-sm">{errors.lastName.message}</p>)}
 
           <input {...register('email')} className='border border-gray rounded-sm shadow-xs h-10 p-3 placeholder:text-xs' type="email" name="email" placeholder='Email' />
           {errors.email && (<p className="-mt-5 text-red-500 text-sm">{errors.email.message}</p>)}
 
           <div className='relative'>
             <input {...register('password')} className='w-full border border-gray rounded-sm shadow-xs h-10 p-3 placeholder:text-xs' type="text" name="password" id="" placeholder='Password' />
-            <FiEye className='absolute right-5 top-3'/>
+            <FiEye className='absolute right-5 top-3' />
           </div>
-            {errors.password && (<p className="-mt-5 text-red-500 text-sm">{errors.password.message}</p>)}
+          {errors.password && (<p className="-mt-5 text-red-500 text-sm">{errors.password.message}</p>)}
 
 
           <button className='bg-primary rounded-sm shadow-lg h-10 text-white flex items-center justify-center font-semibold mb-6'>
             {isLoading ? (<div className='loader'></div>) : "Sign up"}
-           
+
           </button>
         </div>
       </form>

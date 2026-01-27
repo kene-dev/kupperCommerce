@@ -1,18 +1,25 @@
 import { useGetUserQuery } from '@/app/features/api/authApiSlice'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { Navigate, Outlet } from 'react-router'
+import { Navigate, Outlet, useLocation } from 'react-router'
 
 const ProtectedPage = () => {
-  // const isOnline = useSelector(state => state.persistedReducer.auth.user)
-  const { data, isLoading } = useGetUserQuery()
+  const { data, isLoading, isFetching } = useGetUserQuery()
+  const location = useLocation()
 
-  console.log("PROFILE PAGE DATA: ", data)
-  if (isLoading) {
-    return <div>Loading...</div>
+  if (isLoading || isFetching) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="loader"></div>
+        <p className="ml-2">Verifying authentication...</p>
+      </div>
+    )
   }
 
-  return data ? <Outlet /> : <Navigate to="/auth" replace />;
+  if (data) {
+    return <Outlet />
+  }
+
+  return <Navigate to="/auth" state={{ from: location }} replace />
 }
 
 export default ProtectedPage

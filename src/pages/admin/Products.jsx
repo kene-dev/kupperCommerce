@@ -195,7 +195,7 @@ const Products = () => {
     }, [value])
 
     return (
-        <div className='w-full min-h-full pb-10 pt-10 px-3 lg:px-5'>
+        <div className='w-full h-full overflow-y-auto pb-10 pt-10 px-3 lg:px-5'>
             <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-0 justify-between'>
                 <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-5 w-full lg:w-auto'>
                     <h1 className='font-semibold'>Product List</h1>
