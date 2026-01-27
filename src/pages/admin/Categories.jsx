@@ -55,7 +55,7 @@ const Categories = () => {
   }
 
   return (
-    <div className='w-full h-full pt-14 px-4 lg:px-0'>
+    <div className='w-full min-h-full pb-10 pt-14 px-4 lg:px-0'>
       <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-0 justify-between'>
         <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-5'>
           <h1 className='font-semibold'>Categories List</h1>
@@ -68,8 +68,8 @@ const Categories = () => {
         </Button>
       </div>
 
-      <div className='w-full lg:w-full overflow-x-scroll mt-10'>
-        <Table className='lg:w-full w-[600px]'>
+      <div className='w-full overflow-x-auto mt-10'>
+        <Table className='w-full min-w-[600px]'>
           <TableHeader>
             <TableRow>
               <TableHead className="text-left">Id</TableHead>

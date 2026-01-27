@@ -195,14 +195,14 @@ const Products = () => {
     }, [value])
 
     return (
-        <div className='w-full h-screen overflow-y-scroll pt-14 px-5'>
-            <div className='flex flex-col lg:flex-row items-center gap-3 lg:gap-0 justify-between'>
-                <div className='flex items-center gap-5'>
+        <div className='w-full min-h-full pb-10 pt-14 px-4 lg:px-5'>
+            <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-0 justify-between'>
+                <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-5 w-full lg:w-auto'>
                     <h1 className='font-semibold'>Product List</h1>
-                    <input placeholder='search product...' onChange={(e) => setSearchTerm(e.target.value)} className='appearance-none lg:w-[320px] h-[37px] rounded-xl placeholer:text-xs text-[#121212]/70 border-[1px] border-black/40 px-5' />
+                    <input placeholder='search product...' onChange={(e) => setSearchTerm(e.target.value)} className='appearance-none w-full lg:w-[320px] h-[37px] rounded-xl placeholder:text-xs text-[#121212]/70 border-[1px] border-black/40 px-5' />
                 </div>
 
-                <Button onClick={() => setOpenModal(true)} className='lg:w-max w-full h-[40px] px-6 flex items-center gap-3'>
+                <Button onClick={() => setOpenModal(true)} className='w-full lg:w-max h-[40px] px-6 flex items-center justify-center gap-3 mt-3 lg:mt-0'>
                     <MdAddToPhotos />
                     Add Product
                 </Button>
@@ -210,8 +210,8 @@ const Products = () => {
 
             {deleteLoading && <p>DELETING PRODUCT ABEG</p>}
 
-            <div className='w-full lg:w-full h-[70%] overflow-x-scroll mt-10'>
-                <Table className='lg:w-full h-full w-[600px] mb-5'>
+            <div className='w-full overflow-x-auto mt-10'>
+                <Table className='w-full min-w-[600px] mb-5'>
                     <TableHeader>
                         <TableRow className='bg-primary hover:bg-primary'>
                             <TableHead className="text-left text-white">Name</TableHead>
