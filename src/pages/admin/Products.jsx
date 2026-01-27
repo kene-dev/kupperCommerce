@@ -230,7 +230,7 @@ const Products = () => {
                                 <TableCell className="grow w-[40px] lg:w-[250px]">{product.productName} </TableCell>
                                 <TableCell className="grow lg:w-[70px] w-[150px] overflow-hidden">
                                     <img
-                                        className="w-full h-full object-contain"
+                                        className="w-full object-cover"
                                         src={product.productImage}
                                         alt={product.productName}
                                     />
