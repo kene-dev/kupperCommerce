@@ -195,7 +195,7 @@ const Products = () => {
     }, [value])
 
     return (
-        <div className='w-full min-h-full pb-10 pt-14 px-4 lg:px-5'>
+        <div className='w-full min-h-full pb-10 pt-10 px-3 lg:px-5'>
             <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-0 justify-between'>
                 <div className='flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-5 w-full lg:w-auto'>
                     <h1 className='font-semibold'>Product List</h1>
@@ -228,14 +228,12 @@ const Products = () => {
                         {data?.products?.map(product => (
                             <TableRow key={product.id} className='rounded-lg shadow-lg bg-white'>
                                 <TableCell className="grow w-[40px] lg:w-[250px]">{product.productName} </TableCell>
-                                <TableCell className="">
-                                    <div className="relative lg:w-[70px] w-[80px] aspect-square overflow-hidden">
-                                        <img
-                                            className="w-full h-full object-contain"
-                                            src={product.productImage}
-                                            alt={product.productName}
-                                        />
-                                    </div>
+                                <TableCell className="grow lg:w-[70px] w-[150px] overflow-hidden">
+                                    <img
+                                        className="w-full h-full object-contain"
+                                        src={product.productImage}
+                                        alt={product.productName}
+                                    />
                                 </TableCell>
 
                                 {/* <TableCell className="basis-5xl"> <img className='w-[300px] basis-5xl lg:h-[47px] h-[300.31px] object-cover' src={product.productImage} /> 
@@ -244,8 +242,8 @@ const Products = () => {
                                 <TableCell><p className='text-wrap  w-[300px] pr-4'>{product.productDescription}</p> </TableCell>
                                 <TableCell><p className='text-wrap  w-[200px] pr-4'>{product.categories?.categoryName}</p> </TableCell>
                                 <TableCell><p className='text-wrap  w-[200px] pr-4'>{product.regions?.regionName}</p> </TableCell>
-                                <TableCell className='grow w-[250px] h-full flex items-center justify-center gap-3'>
-                                    <GoTrash onClick={() => dispatch(deleteProduct(product.id))} className='text-primary w-5 h-5' />
+                                <TableCell className='grow lg:w-[100px] w-max h-full flex items-center justify-start gap-3'>
+                                    <GoTrash onClick={() => dispatch(deleteProduct(product.id))} className='text-red-500 w-5 h-5' />
 
                                     <MdModeEditOutline onClick={() => {
                                         setSelectedProduct(product)
@@ -260,7 +258,7 @@ const Products = () => {
                                             productImage: undefined
                                         })
                                         setOpenEditModal(true)
-                                    }} className='text-primary w-5 h-5' />
+                                    }} className='text-blue-500 w-5 h-5' />
                                 </TableCell>
                             </TableRow>
                         ))}
