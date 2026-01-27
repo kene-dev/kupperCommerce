@@ -46,13 +46,12 @@ function App() {
         // Handle authenticated states
         if (session?.user) {
           console.log(session)
-          // dispatch(setAuthState({
-          //   id: session.user.id,
-          //   role: session.user.user_metadata?.role,
-          //   firstName: session.user.user_metadata?.first_name,
-          //   lastName: session.user.user_metadata?.last_name
-          // }));
-
+          dispatch(setAuthState({
+            id: session.user.id,
+            role: session.user.user_metadata?.role,
+            firstName: session.user.user_metadata?.first_name,
+            lastName: session.user.user_metadata?.last_name
+          }));
         }
       }
     );

@@ -18,30 +18,36 @@ const signInSchema = z.object({
 })
 
 const Login = () => {
-  const [signInUser, {isLoading}] = useSignInUserMutation()
-  const {register, handleSubmit,reset, formState:{errors,isSubmitting}} = useForm({
-        resolver: zodResolver(signInSchema)
+  const [signInUser, { isLoading }] = useSignInUserMutation()
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm({
+    resolver: zodResolver(signInSchema)
   })
   const [hide, setHide] = useState(true);
   const navigate = useNavigate()
   const isOnline = useSelector(state => state.persistedReducer.auth.user)
+  const userRole = useSelector(state => state.persistedReducer.auth.role)
 
 
   const onSubmit = async (formData) => {
-      try {
-     const response = await signInUser(formData).unwrap();
+    try {
+      const response = await signInUser(formData).unwrap();
       reset()
     } catch (error) {
       toast.error(error.data)
       console.error('Error logging in user:', error)
     }
-}
-
-useEffect(() => {
-  if(isOnline){
-    navigate('/')
   }
-},[isOnline])
+
+  useEffect(() => {
+    if (isOnline) {
+      // Navigate admin users to admin panel, regular users to home
+      if (userRole === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/')
+      }
+    }
+  }, [isOnline, userRole, navigate])
 
 
   return (
@@ -57,12 +63,12 @@ useEffect(() => {
 
           <div className='relative'>
             <input {...register('password')} className='w-full border border-gray rounded-sm shadow-xs h-10 p-3 placeholder:text-xs' type={hide ? 'password' : "text"} placeholder='Password' />
-            <FiEye onClick={() => setHide(!hide)} className='absolute right-5 top-3 eye-icon'/>
+            <FiEye onClick={() => setHide(!hide)} className='absolute right-5 top-3 eye-icon' />
           </div>
           {errors.password && (<p className="-mt-5 text-red-500 text-sm">{errors.password.message}</p>)}
 
           <button className='bg-primary rounded-sm shadow-lg h-10 text-white flex items-center justify-center font-semibold'>
-            {isLoading ? (<div className='loader'></div> ) : 'Sign in'}
+            {isLoading ? (<div className='loader'></div>) : 'Sign in'}
           </button>
 
           <Link to="forgot-password" className='text-primary text-center'>Forgot Your Password?</Link>
@@ -72,7 +78,7 @@ useEffect(() => {
 
       <div className='w-full flex justify-center items-center flex-col gap-2 md:w-[300px]'>
         <h1 className='text-md font-semibold '>Don’t Have An Account?</h1>
-        <Link  className='flex items-center justify-center border border-primary shadow-sm rounded-md w-full h-10 text-primary font-semibold text-sm' to='/auth/register'>
+        <Link className='flex items-center justify-center border border-primary shadow-sm rounded-md w-full h-10 text-primary font-semibold text-sm' to='/auth/register'>
           Create Account
         </Link>
         <p className='text-center text-xs lg:text-sm px-2'>Your privacy and security are important to us. For more information on how we use your data read our</p>
